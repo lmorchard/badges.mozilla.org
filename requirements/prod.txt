@@ -10,7 +10,6 @@ requests==1.1.0
 # Templates
 -e git://github.com/jbalogh/jingo.git#egg=jingo
 -e git://github.com/jsocol/jingo-minify.git#egg=jingo-minify
-GitPython==0.1.7
 
 # Various tidbits
 -e git://github.com/jsocol/commonware.git#egg=commonware
@@ -39,12 +38,14 @@ certifi==0.0.8
 chardet==1.0.1
 httplib2==0.7.4
 django-taggit==0.9.3
+GitPython==0.1.7
 gitdb==0.5.0
 html5lib==0.95
 pyparsing==1.5.5
 
 ordereddict
 versiontools
+django-picklefield
 
 # TODO: Figure out why this won't install
 # pyqrnative==0.1.4
