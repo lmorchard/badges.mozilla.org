@@ -4,8 +4,8 @@ Django==1.5.6
 -e git://github.com/jsocol/django-cronjobs.git#egg=django-cronjobs
 
 # BrowserID
-django-browserid==0.10.1
-requests==1.1.0
+django-browserid==0.11
+requests==2.5.1
 
 # Templates
 -e git://github.com/jbalogh/jingo.git#egg=jingo
@@ -18,7 +18,7 @@ requests==1.1.0
 # Security
 -e git://github.com/fwenzel/django-sha2.git#egg=django-sha2
 -e git://github.com/mozilla/django-session-csrf.git#egg=django-session-csrf
-cef==0.3
+cef==0.5
 
 # L10n
 Babel>=0.9.4
@@ -28,24 +28,23 @@ Babel>=0.9.4
 # Mobile
 -e git://github.com/jbalogh/django-mobility@644e0c1c58#egg=django-mobility
 
-python-memcached==1.48
-
-# TODO: Upgrade these versions
-Bleach==1.2.2
-async==0.6.0
 BeautifulSoup==3.2.1
-certifi==0.0.8
-chardet==1.0.1
-httplib2==0.7.4
-django-taggit==0.9.3
-GitPython==0.1.7
-gitdb==0.5.0
-html5lib==0.95
-pyparsing==1.5.5
+python-memcached==1.53
+async==0.6.2
+certifi==14.05.14
+chardet==2.3.0
+Bleach==1.4.1
+html5lib==0.999
+httplib2==0.9
+pyparsing==2.0.3
+django-taggit==0.12.2
+ordereddict==1.1
+versiontools==1.9.1
+django-picklefield==0.3.1
 
-ordereddict
-versiontools
-django-picklefield
+# TODO: Maybe remove?
+gitdb==0.6.4
+GitPython==0.3.5
 
 # TODO: Figure out why this won't install
 # pyqrnative==0.1.4
