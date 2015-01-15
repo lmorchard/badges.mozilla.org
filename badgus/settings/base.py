@@ -389,6 +389,9 @@ SITE_TITLE = 'dev.badges.mozilla.org'
 # Make sure South stays out of the way during testing
 #SOUTH_TESTS_MIGRATE = False
 #SKIP_SOUTH_TESTS = True
+SOUTH_MIGRATION_MODULES = {
+    'taggit': 'taggit.south_migrations',
+}
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
