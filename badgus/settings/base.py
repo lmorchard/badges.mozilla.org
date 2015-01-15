@@ -149,7 +149,7 @@ DOMAIN_METHODS = {
 }
 
 # Paths that don't require a locale code in the URL.
-SUPPORTED_NONLOCALES = ['media', 'static', 'admin']
+SUPPORTED_NONLOCALES = ['media', 'static', 'admin', 'browserid']
 
 
 ## Media and templates.
@@ -377,6 +377,12 @@ PORT = 80
 
 ## django-mobility
 MOBILE_COOKIE = 'mobile'
+
+
+##############################
+# TODO: Merge the below stuff with the above stuff, since it came from two different settings files
+##############################
+
 
 SITE_TITLE = 'dev.badges.mozilla.org'
 
