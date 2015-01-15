@@ -2,6 +2,7 @@ badges.mozilla.org
 ==================
 
 [![Build Status](https://travis-ci.org/mozilla/badges.mozilla.org.svg)](https://travis-ci.org/mozilla/badges.mozilla.org)
+[![Requirements Status](https://requires.io/github/mozilla/badges.mozilla.org/requirements.svg?branch=update-dependencies)](https://requires.io/github/mozilla/badges.mozilla.org/requirements/?branch=update-dependencies)
 
 badges.mozilla.org is a badge service based on [playdoh][].
 
