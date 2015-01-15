@@ -1,5 +1,20 @@
-python-memcached==1.48
-bleach=1.1.5
 -r ../vendor/src/funfactory/funfactory/requirements/prod.txt
 
--e git://github.com/jtauber/django-notification.git#egg=django-notification
+python-memcached==1.48
+
+# TODO: Upgrade these versions
+BeautifulSoup==3.2.1
+certifi==0.0.8
+chardet==1.0.1
+httplib2==0.7.4
+django-taggit==0.9.3
+
+# TODO: Figure out why this won't install
+# pyqrnative==0.1.4
+
+# TODO: Resolve these into PyPi released versions
+-e git://github.com/lambdafu/django-south.git@a9758e12b0ee7d90b3bc25ad545e8184e8dea916#egg=django-south
+-e git://github.com/mozilla/django-csp.git@149e2662417dced1661abdbde84fb0562d0c0dbc#egg=django-csp
+-e git://github.com/lmorchard/django-notification.git@33fb2325d007a12a96f1ccc69f1602efa8794f46#egg=django-notification
+-e git://github.com/lmorchard/django-valet-keys.git@824023563519764b2edbf0a3148415b851659837#egg=django-valet-keys
+-e git://github.com/lmorchard/django-constance.git@ae92c447ec011dca877c6626527530f83acf40d7#egg=django-constance
