@@ -3,14 +3,6 @@ Django==1.5.6
 -e git://github.com/jbalogh/django-multidb-router.git#egg=django-multidb-router
 -e git://github.com/jsocol/django-cronjobs.git#egg=django-cronjobs
 
-# Celery: Message queue
-celery==2.5.5
-amqplib==1.0.2
-anyjson==0.3.3
-django-celery==2.5.5
-django-picklefield==0.2.1
-kombu==2.1.8
-
 # BrowserID
 django-browserid==0.10.1
 requests==1.1.0
