@@ -1,9 +1,9 @@
-badg.us
-=======
+badges.mozilla.org
+==================
 
 [![Build Status](https://travis-ci.org/mozilla/badges.mozilla.org.svg)](https://travis-ci.org/mozilla/badges.mozilla.org)
 
-badg.us is a badge service based on [playdoh][].
+badges.mozilla.org is a badge service based on [playdoh][].
 
 [playdoh]: https://github.com/mozilla/playdoh
 
