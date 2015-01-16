@@ -9,7 +9,11 @@ os.environ.setdefault('CELERY_LOADER', 'django')
 wsgidir = os.path.dirname(__file__)
 site.addsitedir(os.path.abspath(os.path.join(wsgidir, '../')))
 
-# manage adds /apps, /lib, and /vendor to the Python path.
+# Activate virtualenv
+activate_env = os.path.abspath(os.path.join(wsgidir, "../virtualenv/bin/activate_this.py"))
+execfile(activate_env, dict(__file__=activate_env))
+
+# Import for side-effects: set-up
 import manage
 
 import django.core.handlers.wsgi
