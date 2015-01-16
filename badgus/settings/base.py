@@ -9,8 +9,10 @@ import socket
 
 from django.utils.functional import lazy
 
-from ..base.manage import ROOT, path
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+def path(*a):
+    return os.path.join(ROOT, *a)
 
 # For backwards compatability, (projects built based on cloning playdoh)
 # we still have to have a ROOT_URLCONF.
@@ -471,6 +473,8 @@ TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
 ]
 
 INSTALLED_APPS = [
+    'constance',
+    'constance.backends.database',
     'badgus.base', # Mainly to override registration templates, FIXME
 ] + list(INSTALLED_APPS) + [
     'django.contrib.sites',
@@ -488,10 +492,7 @@ INSTALLED_APPS = [
 
     'notification',
     #'csp',
-    'django_browserid',
-    'south',
-    'constance',
-    'constance.backends.database',
+    #'south',
 ]
 
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
@@ -657,3 +658,5 @@ CONSTANCE_CONFIG = dict(
 )
 
 BROWSERID_VERIFY_CLASS = 'django_browserid.views.Verify'
+
+SQL_RESET_SEQUENCES = False
