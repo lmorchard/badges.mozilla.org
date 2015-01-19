@@ -49,16 +49,16 @@ def update_info(ctx):
 @task
 def setup_dependencies(ctx):
     with ctx.lcd(settings.SRC_DIR):
-        # Creating a virtualenv tries to open virtualenv/bin/python for
-        # writing, but because virtualenv is using it, it fails.
-        # So we delete it and let virtualenv create a new one.
-        ctx.local('rm -f virtualenv/bin/python')
+        # TODO: only delete & recreate virtualenv when needed
+        # Maybe stash the md5 of requirements files between deploys, only
+        # rebuild virtualenv on mismatch?
         ctx.local('rm -rf virtualenv')
         ctx.local('virtualenv --no-site-packages virtualenv')
 
         # Activate virtualenv to append to path.
         activate_env = os.path.join(settings.SRC_DIR, 'virtualenv', 'bin', 'activate_this.py')
         execfile(activate_env, dict(__file__=activate_env))
+        ctx.local('python --version')
         ctx.local('python scripts/peep.py install -r requirements/prod.txt')
         ctx.local('virtualenv --relocatable virtualenv')
 
