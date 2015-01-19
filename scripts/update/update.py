@@ -74,8 +74,8 @@ def update_db(ctx):
         ctx.local("python manage.py syncdb --noinput")
         # HACK: Skip djcelery migrations. Tables already there... somehow?
         # ctx.local('python manage.py migrate djcelery --fake --noinput')
-        ctx.local('python manage.py migrate --noinput')
-        ctx.local('python manage.py migrate --list')
+        # ctx.local('python manage.py migrate --noinput')
+        # ctx.local('python manage.py migrate --list')
 
 
 @task
