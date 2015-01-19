@@ -1,6 +1,10 @@
+# sha256: VOtZznhUAcfR_e7SRe_OWX6Q-BHWog9rXGkxwASdY6Y
+Django==1.6.10
+
+# TODO: Re-enable Django 1.7 when we have python2.7 on prod!
 # sha256: 8ib7iqQ4RWlo1AP2c53hzy2tEo24b2buK0Hf6-NkXFs
 # sha256: cu3Ue1WudI0p8acdXKS4bnhcn7l0QHzyQrMWjm8bF34
-Django==1.7.3
+# Django==1.7.3
 
 # sha256: 5F9_ELpYjxzEZRmmHqiV92fi2Zpjfn3lr4cJsSFIXss
 django-browserid==0.11
