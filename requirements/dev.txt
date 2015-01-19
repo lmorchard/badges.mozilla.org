@@ -8,5 +8,5 @@ Sphinx==1.2.3
 # sha256: 6U6syZbt8Rq7o3Lw3APp2PHQCIn9KeiTXE6bvZuir9w
 django-debug-toolbar==1.2.2
 
-# sha256: a_c6l7D-RUKn7i2KYnoTs4KegdERvidVGzag36DCkJk
-q==2.4
+# sha256: 0RX5UFjxglD67At_6Khqkmk55d8hXc2_hymQbZo0tlc
+q==2.5
