@@ -53,6 +53,7 @@ def setup_dependencies(ctx):
         # writing, but because virtualenv is using it, it fails.
         # So we delete it and let virtualenv create a new one.
         ctx.local('rm -f virtualenv/bin/python')
+        ctx.local('rm -rf virtualenv')
         ctx.local('virtualenv --no-site-packages virtualenv')
 
         # Activate virtualenv to append to path.
