@@ -4,37 +4,9 @@
 # sha256: lJM7ZOL-CAfaBhLFdKAhwNrCjHvTxKI3I65aOeqPPQQ
 Sphinx==1.2.3
 
-# sha256: eLAxFrrdDbsu1N7clqSj1CE4uUu4n8Lrmffzvf0Zn1Y
-# sha256: drxjpOLV5aDfd8p9GPD1bixGz7YrcRA7qSqSx5-rHgM
-nose==1.3.4
-
-# sha256: uDndLZwRfHAUMMFJlWkYpCOphjtIsJyQ4wpgE-fS9E8
-mock==1.0.1
-
-# sha256: EeMy8qKdhkQ2S0ynm0rAed8yhibsjCesDozEVGlnGco
-translate-toolkit==1.12.0
-
-# sha256: f2UH1ADQft_R6oIF2jaAgAmwxTn1uKbgq1Qze5VebcM
-feedparser==5.1.3
-
-# sha256: RMoeA4y1f-QKwN_4tnsljv4FUXv5tLSwcDX4voMKrAE
-tox==1.8.1
-
-# sha256: NmfSakH-wwNkoO9yWAgyylMogC1VP21ucq9awhyzY2U
-django-nose==1.3
-
-# sha256: RsUeuHi3h-gU7o-XN7CmIREDSutNHAZFCsWo6lpw5gI
-pyquery==1.2.9
-
-# sha256: BTWn4nAUh0snrjpNM-h0njRb36YnZhlSCLeZa_EQBoI
-cssselect==0.9.1
-
-# sha256: BpWUg30DdqG6z1zEKqmhvi4cE5bcYvfQf3NYr-zTSt8
-lxml==3.4.1
-
 # sha256: tBMRWLEc0GKZdw-NE6kxsyx2Obe_tVlVtGe0c_Np9po
 # sha256: 6U6syZbt8Rq7o3Lw3APp2PHQCIn9KeiTXE6bvZuir9w
 django-debug-toolbar==1.2.2
 
-# sha256: i8pS00-rg-P2l9AuFWJb12bqLJL7FVXGYFfsElkMwZ0
-https://github.com/jbalogh/test-utils/archive/e42e031d31ea63d593e47d564545149a0f30b95f.zip#egg=test-utils
+# sha256: a_c6l7D-RUKn7i2KYnoTs4KegdERvidVGzag36DCkJk
+q==2.4

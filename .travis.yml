@@ -15,7 +15,7 @@ before_install:
     - mysql -e 'create database badgus;'
 
 install:
-    - scripts/peep.py install -r requirements/compiled.txt -r requirements/dev.txt
+    - scripts/peep.py install -r requirements/dev.txt
 
 script: python manage.py test -v2
 
