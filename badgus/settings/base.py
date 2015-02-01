@@ -30,6 +30,8 @@ TEMPLATE_DEBUG = config('DEBUG', default=DEBUG, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(),
     default='badges-dev.allizom.org,badges.allizom.org,badges.mozilla.org')
+BROWSERID_AUDIENCES = config('BROWSERID_AUDIENCES', cast=Csv(),
+    default=','.join(['https://%s/' % x for x in ALLOWED_HOSTS]))
 
 # For backwards compatability, (projects built based on cloning playdoh)
 # we still have to have a ROOT_URLCONF.
@@ -292,9 +294,12 @@ def get_middleware(exclude=(), append=(),
     return current['middleware']
 
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
+    'constance',
+    'constance.backends.database',
+    'badgus.base',
+
     # Local apps
-    #'funfactory',  # Content common to most playdoh-based apps.
     'compressor',
 
     'tower',  # for ./manage.py extract (L10n)
@@ -307,12 +312,6 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites',
-    # 'django.contrib.messages',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 
     # Third-party apps, patches, fixes
     'commonware.response.cookies',
@@ -321,8 +320,27 @@ INSTALLED_APPS = (
 
     # L10n
     'product_details',
-)
 
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
+
+    'taggit',
+    'valet_keys',
+
+    'badgus.profiles',
+    
+    'badger',
+
+    'badgus.badger_api',
+
+    'notification',
+    #'csp',
+    #'south',
+]
+
+for app in config('EXTRA_APPS', default='', cast=Csv()):
+    INSTALLED_APPS.append(app)
 
 def get_apps(exclude=(), append=(), current={'apps': INSTALLED_APPS}):
     """
@@ -473,29 +491,6 @@ TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'constance.context_processors.config',
     'django.contrib.messages.context_processors.messages',
     'notification.context_processors.notification',
-]
-
-INSTALLED_APPS = [
-    'constance',
-    'constance.backends.database',
-    'badgus.base', # Mainly to override registration templates, FIXME
-] + list(INSTALLED_APPS) + [
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.admin',
-
-    'taggit',
-    'valet_keys',
-
-    'badgus.profiles',
-    
-    'badger',
-
-    'badgus.badger_api',
-
-    'notification',
-    #'csp',
-    #'south',
 ]
 
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
@@ -663,5 +658,3 @@ CONSTANCE_CONFIG = dict(
 BROWSERID_VERIFY_CLASS = 'django_browserid.views.Verify'
 
 SQL_RESET_SEQUENCES = False
-
-BROWSERID_AUDIENCES = ALLOWED_HOSTS

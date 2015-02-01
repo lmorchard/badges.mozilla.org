@@ -20,6 +20,8 @@ web:
     - MEMCACHED=memcached:11211
     - DEBUG=True
     - ALLOWED_HOSTS=localhost,127.0.0.1,badges-local.allizom.org
+    - BROWSERID_AUDIENCES=http://localhost:8000/,http://127.0.0.1:8000/,http://badges-local.allizom.org:8000/
     - SECRET_KEY=8675309
+    - EXTRA_APPS=debug_toolbar,
   command:
     ./bin/run-fig.sh
