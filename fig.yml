@@ -1,0 +1,25 @@
+db:
+  image: mysql:5.6
+  environment:
+    - MYSQL_ROOT_PASSWORD=passwd
+    - MYSQL_DATABASE=badges
+memcached:
+  image: memcached:latest
+web:
+  build: .
+  ports:
+    - "8000:8000"
+  volumes:
+    - .:/app
+  links:
+    - db
+    - memcached
+  environment:
+    - PYTHONDONTWRITEBYTECODE=1
+    - DATABASE_URL=mysql://root:passwd@db/badges
+    - MEMCACHED=memcached:11211
+    - DEBUG=True
+    - ALLOWED_HOSTS=localhost,127.0.0.1,badges-local.allizom.org
+    - SECRET_KEY=8675309
+  command:
+    ./bin/run-fig.sh
