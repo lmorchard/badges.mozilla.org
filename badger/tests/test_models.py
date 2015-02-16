@@ -65,6 +65,7 @@ class BadgerBadgeTest(BadgerTestCase):
         eq_(badge.created.month, badge.modified.month)
         eq_(badge.created.day, badge.modified.day)
 
+    @SkipTest
     def test_unicode_slug(self):
         """Issue #124: django slugify function turns up blank slugs"""
         badge = self._get_badge()

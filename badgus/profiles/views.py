@@ -17,6 +17,8 @@ from django.template import RequestContext
 from .models import UserProfile
 from .forms import UserProfileEditForm, UserEditForm
 
+from badgus.teams.models import BadgeTeam
+
 try:
     from commons.urlresolvers import reverse
 except ImportError, e:
@@ -49,8 +51,10 @@ def profile_view(request, username):
     user = get_object_or_404(User, username=username)
     profile = user.get_profile()
 
+    teams = BadgeTeam.objects.filter(members__username=user.username)
+
     return render_to_response('profiles/profile_view.html', dict(
-        user=user, profile=profile
+        user=user, profile=profile, teams=teams
     ), context_instance=RequestContext(request))
 
 

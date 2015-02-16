@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block pageid %}team_detail{% endblock %}
+
+{% block content %}
+
+<section class="row-fluid">
+
+    <section class="span4" id="detail">
+        <header class="page-header">
+            <h2 class="team-name">{{ _("Team: {name}") | fe(name=object.name) }}</h2>
+        </header>
+
+        <ul class="btn-list">
+            {% if existing_application and not existing_application.approver %}
+                <li><a class="action btn btn-info view-team-application" 
+                    href="{{ existing_application.get_absolute_url() }}">{{ _('Review your application to this team') }}</a></li>
+            {% elif request.user.has_perm('teams.apply_badgeteam', object) and not object.has_member(request.user) %}
+                <li><a class="action btn btn-success apply-team" 
+                    href="{{ url('teams.team_apply', team_slug=object.slug) }}">{{ _('Apply to join this team') }}</a></li>
+            {% endif %}
+            {% if request.user.has_perm('teams.list_badgeteamapplication', object) %}
+                <li><a class="action btn btn-info list-team-applications" 
+                    href="{{ url('teams.team_applications_list', team_slug=object.slug) }}">{{ _('View team applications') }}</a></li>
+            {% endif %}
+            {% if request.user.has_perm('teams.change_badgeteam', object) %}
+                <li><a class="action btn btn-primary" 
+                    href="{{ url('teams.team_edit', slug=object.slug) }}">{{ _('Edit team') }}</a></li>
+            {% endif %}
+            {% if request.user.has_perm('teams.delete_badgeteam', object) %}
+                <li><a class="action btn btn-danger" 
+                    href="{{ url('teams.team_delete', slug=object.slug) }}">{{ _('Delete team') }}</a></li>
+            {% endif %}
+        </ul>
+
+        {% if object and object.image %}
+            {% set image_url = object.image.url %}
+        {% else %}
+            {# TODO: Put the URL for default team image in settings #}
+            {% set image_url = static("img/default-badge.png") %}
+        {% endif %}
+
+        <dl class="team">
+            
+            <dt>{{_('Image')}}</dt>
+            <dd class="image">
+                <a href="{{ object.get_absolute_url() }}" class="image"><img src="{{ image_url }}"
+                    alt="{{ object.name }}" width="256" height="256" /></a>
+            </dd>
+            
+            <dt>{{_('Description')}}</dt><dd class="description">{{ object.description }}</dd>
+            <dt>{{_('Created')}}</dt><dd class="description">{{ object.created }}</dd>
+            <dt>{{_('Modified')}}</dt><dd class="description">{{ object.modified }}</dd>
+
+        </dl>
+    
+    </section>
+    
+    <section class="span8">
+        
+        <section id="team_badges" class="item_flow">
+            <header class="page-header">
+                <h2>
+                    <span>{{ _("Badges") }}</span>
+                </h2>
+            </header>
+            <ul class="badges">
+                {% for badge in badge_list %}
+                    {% if badge.image %}
+                        {% set img_url = badge.image.url %}
+                    {% else %}
+                        {% set img_url = static("img/default-badge.png") %}
+                    {% endif %}
+                    <li class="badge">
+                        <a href="{{ badge.get_absolute_url() }}" class="image"><img src="{{ img_url }}"
+                            alt="{{ badge.title }}" width="128" height="128" /></a>
+                        <a href="{{ badge.get_absolute_url() }}" class="label"><span class="title">{{ badge.title }}</span></a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+        
+        <section id="team_members" class="item_flow">
+            <header class="page-header">
+                <h2>
+                    <span>{{ _("Members") }}</span>
+                </h2>
+            </header>
+            <ul class="members clearfix">
+                {% for member in member_list %}
+                    <li class="member">
+                        <a href="{{ member.user.get_absolute_url() }}" class="image avatar_image"><img src="{{ user_avatar(member.user) }}" alt="{{ member.user.username }}" width="128" height="128" /></a>
+                        <a href="{{ member.user.get_absolute_url() }}" class="label"><span class="title">{{ member.user }}</span></a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    
+    </section>
+
+</section>
+
+{% endblock %}

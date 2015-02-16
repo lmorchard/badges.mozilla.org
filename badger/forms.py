@@ -21,6 +21,8 @@ try:
 except ImportError:
     TaggableManager = None
 
+from badgus.teams.models import BadgeTeam
+
 
 EMAIL_SEPARATOR_RE = re.compile(r'[,;\s]+')
 
@@ -165,14 +167,22 @@ class BadgeEditForm(MyModelForm):
             fields += ('tags',)
         except ImportError:
             pass
-        fields += ('unique', 'nominations_accepted',
+        fields += ('team', 'unique', 'nominations_accepted',
                    'nominations_autoapproved',)
 
     required_css_class = "required"
     error_css_class = "error"
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', AnonymousUser)
+
         super(BadgeEditForm, self).__init__(*args, **kwargs)
+
+        qs = BadgeTeam.objects.filter(members__username=user.username)
+        if qs.count() > 0:
+            self.fields['team'].queryset = qs
+        else:
+            del self.fields['team']
 
         # TODO: l10n: Pretty sure this doesn't work for rtl languages.
         # HACK: inject new templates into the image field, monkeypatched

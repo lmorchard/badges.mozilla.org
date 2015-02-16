@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block pageid %}team_create{% endblock %}
+
+{% block content %}
+
+<section>
+    <section class="row-fluid">
+        <section class="span12">
+            <header class="page-header">
+                <h2 class="team-name">{{ _("Apply to Join Team: {name}") | fe(name=badgeteam.name) }}</h2>
+            </header>
+            <form id="join_team" method="POST" action="" enctype="multipart/form-data">
+                {{ csrf() }}
+                <ul>
+                    {{ form.as_ul() }}
+                    <li><input type="submit" class="btn btn-large btn-primary submit" 
+                        value="{{ _("Submit application") }}"></li>
+                </ul>
+            </form>
+        </section>
+    </section>
+</section>
+{% endblock %}

@@ -66,6 +66,13 @@ try:
 except ImportError:
     taggit = None
 
+try:
+    import teamwork
+    from teamwork.models import Team, Role
+    from badgus.teams.models import BadgeTeam
+except ImportError:
+    teamwork = None
+
 if "notification" in settings.INSTALLED_APPS:
     from notification import models as notification
 else:
@@ -426,6 +433,9 @@ class Badge(models.Model):
     if taggit:
         tags = TaggableManager(blank=True)
 
+    if teamwork:
+        team = models.ForeignKey(BadgeTeam, blank=True, null=True)
+
     creator = models.ForeignKey(User, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True, blank=False)
     modified = models.DateTimeField(auto_now=True, blank=False)
@@ -434,8 +444,12 @@ class Badge(models.Model):
         unique_together = ('title', 'slug')
         ordering = ['-modified', '-created']
         permissions = (
+            ('award_badge',
+                _(u'Can award this badge')),
+            ('nominate_badge',
+                _(u'Can submit nominations for this badge')),
             ('manage_deferredawards',
-             _(u'Can manage deferred awards for this badge')),
+                _(u'Can manage deferred awards for this badge')),
         )
 
     get_permissions_for = get_permissions_for
@@ -448,6 +462,15 @@ class Badge(models.Model):
 
     def get_upload_meta(self):
         return ("badge", self.slug)
+
+    def has_owner(self, user):
+        return self.creator.pk == user.pk
+
+    def get_permission_parents(self):
+        out = []
+        if self.team:
+            out.append(self.team)
+        return out
 
     def clean(self):
         if self.image:
@@ -481,7 +504,7 @@ class Badge(models.Model):
     def allows_edit_by(self, user):
         if user.is_anonymous():
             return False
-        if user.has_perm('badger.change_badge'):
+        if user.has_perm('badger.change_badge', self):
             return True
         if user == self.creator:
             return True
@@ -490,7 +513,7 @@ class Badge(models.Model):
     def allows_delete_by(self, user):
         if user.is_anonymous():
             return False
-        if user.has_perm('badger.change_badge'):
+        if user.has_perm('badger.change_badge', self):
             return True
         if user == self.creator:
             return True
@@ -500,22 +523,21 @@ class Badge(models.Model):
         """Is award_to() allowed for this user?"""
         if None == user:
             return True
+        if user.has_perm('badger.award_badge', self):
+            return True
         if user.is_anonymous():
             return False
         if user.is_staff or user.is_superuser:
             return True
         if user == self.creator:
             return True
-
-        # TODO: List of delegates for whom awarding is allowed
-
         return False
 
     def allows_manage_deferred_awards_by(self, user):
         """Can this user manage deferred awards"""
         if user.is_anonymous():
             return False
-        if user.has_perm('badger.manage_deferredawards'):
+        if user.has_perm('badger.manage_deferredawards', self):
             return True
         if user == self.creator:
             return True
@@ -711,10 +733,18 @@ class Award(models.Model):
 
     class Meta:
         ordering = ['-modified', '-created']
+        permissions = (
+        )
 
     def __unicode__(self):
         by = self.creator and (u' by %s' % self.creator) or u''
         return u'Award of %s to %s%s' % (self.badge, self.user, by)
+
+    def get_owner_user(self):
+        return self.creator
+
+    def get_permission_parents(self):
+        return [ this.badge, ]
 
     @models.permalink
     def get_absolute_url(self):
@@ -909,6 +939,9 @@ class Progress(models.Model):
 
     get_permissions_for = get_permissions_for
 
+    def get_permission_parents(self):
+        return [ this.badge, ]
+
     def __unicode__(self):
         perc = self.percent and (' (%s%s)' % (self.percent, '%')) or ''
         return u'Progress toward %s by %s%s' % (self.badge, self.user, perc)
@@ -1023,10 +1056,16 @@ class DeferredAward(models.Model):
         ordering = ['-modified', '-created']
         permissions = (
             ("grant_deferredaward",
-             _(u'Can grant deferred award to an email address')),
+                 _(u'Can grant deferred award to an email address')),
         )
 
     get_permissions_for = get_permissions_for
+
+    def get_owner_user(self):
+        return self.creator
+
+    def get_permission_parents(self):
+        return [ this.badge, ]
 
     def allows_detail_by(self, user):
         # TODO: Need some logic here, someday.
@@ -1160,11 +1199,23 @@ class Nomination(models.Model):
     created = models.DateTimeField(auto_now_add=True, blank=False)
     modified = models.DateTimeField(auto_now=True, blank=False)
 
+    class Meta:
+        permissions = (
+            ('approve_nomination', _(u'Can approve this nomination')),
+            ('reject_nomination', _(u'Can reject this nomination')),
+        )
+
     get_permissions_for = get_permissions_for
 
     def __unicode__(self):
         return u'Nomination for %s to %s by %s' % (self.badge, self.nominee,
                                                    self.creator)
+
+    def get_owner_user(self):
+        return self.creator
+
+    def get_permission_parents(self):
+        return [ this.badge, ]
 
     def get_absolute_url(self):
         return reverse('badger.views.nomination_detail',

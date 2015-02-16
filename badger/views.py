@@ -157,10 +157,10 @@ def create(request):
         return HttpResponseForbidden()
 
     if request.method != "POST":
-        form = BadgeNewForm()
+        form = BadgeNewForm(user=request.user)
         form.initial['tags'] = request.GET.get('tags', '')
     else:
-        form = BadgeNewForm(request.POST, request.FILES)
+        form = BadgeNewForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             new_sub = form.save(commit=False)
             new_sub.creator = request.user
@@ -183,9 +183,9 @@ def edit(request, slug):
         return HttpResponseForbidden()
 
     if request.method != "POST":
-        form = BadgeEditForm(instance=badge)
+        form = BadgeEditForm(instance=badge, user=request.user)
     else:
-        form = BadgeEditForm(request.POST, request.FILES, instance=badge)
+        form = BadgeEditForm(request.POST, request.FILES, instance=badge, user=request.user)
         if form.is_valid():
             new_sub = form.save(commit=False)
             new_sub.save()

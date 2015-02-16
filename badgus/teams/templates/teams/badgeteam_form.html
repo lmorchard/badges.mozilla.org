@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block pageid %}team_create{% endblock %}
+
+{% block content %}
+
+<section>
+    <section class="row-fluid">
+        <section class="span6">
+            <header class="page-header">
+                {% if not badgeteam %}
+                    <h2>{{ _("Create a team") }}</h2>
+                {% else %}
+                    <h2 class="team-name">{{ _("Team: {name}") | fe(name=badgeteam.name) }}</h2>
+                {% endif %}
+            </header>
+            <form id="create_team" method="POST" action="" enctype="multipart/form-data">
+                {{ csrf() }}
+                <ul>
+                    {{ form.as_ul() }}
+                    {% if not badgeteam %}
+                        <li><input type="submit" class="btn btn-large btn-primary submit" 
+                            value="{{ _("Create team") }}"></li>
+                    {% else %}
+                        <li><input type="submit" class="btn btn-large btn-primary submit" 
+                            value="{{ _("Update team") }}"></li>
+                    {% endif %}
+                </ul>
+            </form>
+        </section>
+    </section>
+</section>
+{% endblock %}

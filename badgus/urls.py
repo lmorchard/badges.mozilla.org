@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import *
 
 from .profiles import urls as profiles_urls
+from .teams import urls as teams_urls
 
 from .base import monkeypatches
 monkeypatches.patch()
@@ -25,6 +26,7 @@ urlpatterns = patterns('',
     (r'^badges/', include('badgus.badger_api.urls')),
     (r'^badges/', include('badger.urls')),
     (r'^profiles/', include(profiles_urls)),
+    (r'^teams/', include(teams_urls)),
     (r'^accounts/', include('django.contrib.auth.urls')),
     (r'^keys/', include('valet_keys.urls')),
     (r'^admin/', include(admin.site.urls)),

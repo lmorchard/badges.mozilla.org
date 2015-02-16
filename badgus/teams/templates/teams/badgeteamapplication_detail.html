@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block pageid %}team_application_detail{% endblock %}
+
+{% block content %}
+
+<section class="row-fluid">
+
+    <section class="span12" id="detail">
+
+        <header class="page-header">
+            <h2 class="team-name">{{ _("Application for Team: {name}") | fe(name=object.team.name) }}</h2>
+        </header>
+
+        <ul class="btn-list">
+            {% if not object.approver %}
+                {% if request.user.has_perm('teams.delete_badgeteamapplication', object) %}
+                    <li><a class="action btn btn-danger delete-application" href="{{ url('teams.team_application_delete', team_slug=object.team.slug, pk=object.pk) }}">{{ _('Delete application') }}</a></li>
+                {% endif %}
+                {% if request.user.has_perm('teams.approve_badgeteamapplication', object) %}
+                    <li>
+                        <form class="inline" method="POST" action="{{ url('teams.team_application_approve', team_slug=object.team.slug, pk=object.pk) }}">{{ csrf() }}<input type="submit" class="btn btn-success approve-application submit" value="{{ _("Approve application") }}"></form>
+                    </li>
+                {% endif %}
+            {% endif %}
+        </ul>
+
+        <dl>
+            <dt>{{_("Team")}}</dt>
+                <dd class="teamname"><a href="{{ object.team.get_absolute_url() }}">{{ object.team }}</a></dd>
+            <dt>{{_("Applicant")}}</dt>
+                <dd class="creator"><a href="{{ object.creator.get_absolute_url() }}"><img src="{{ user_avatar(object.creator) }}" class="avatar" alt="{{ object.creator }}" width="28" height="28" />{{ object.creator }}</a></dd>
+            {% if object.approver %}
+                <dt>{{_("Approved by")}}</dt>
+                    <dd class="approver"><a href="{{ object.approver.get_absolute_url() }}"><img src="{{ user_avatar(object.approver) }}" class="avatar" alt="{{ object.approver }}" width="28" height="28" />{{ object.approver }}</a></dd>
+            {% endif %}
+            <dt>{{_("Comment")}}</dt>
+                <dd class="comment">{{ object.comment }}</dd>
+            <dt>{{_("Created")}}</dt>
+                <dd class="created">{{ object.created }}</dd>
+            <dt>{{_("Modified")}}</dt>
+                <dd class="modified">{{ object.modified }}</dd>
+        </dl>
+    
+    </section>
+
+</section>
+
+{% endblock %}

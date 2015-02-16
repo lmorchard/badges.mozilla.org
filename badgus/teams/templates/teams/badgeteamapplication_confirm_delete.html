@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block pageid %}team_detail{% endblock %}
+
+{% block content %}
+
+<section>
+    <section class="row-fluid">
+        <section class="span6">
+            <header class="page-header">
+                <h2 class="team-name">{{ _("Cancel Application for Team: {name}") | fe(name=object.team.name) }}</h2>
+            </header>
+            <form id="delete_team" method="POST" action="">
+                {{ csrf() }}
+                <p>Are you sure you want to cancel this application?</p>
+                <input type="submit" class="btn btn-danger submit" value="{{_('Yes, cancel application')}}" />
+                <a class="action btn btn-primary" href="{{ object.get_absolute_url() }}">{{ _('No, do not cancel application') }}</a>
+            </form>
+            <dl>
+                <dt>{{_("Team")}}</dt>
+                    <dd class="teamname"><a href="{{ object.team.get_absolute_url() }}">{{ object.team }}</a></dd>
+                <dt>{{_("Applicant")}}</dt>
+                    <dd class="creator"><a href="{{ object.creator.get_absolute_url() }}"><img src="{{ user_avatar(object.creator) }}" class="avatar" alt="{{ object.creator }}" width="28" height="28" />{{ object.creator }}</a></dd>
+                <dt>{{_("Comment")}}</dt>
+                    <dd class="comment">{{ object.comment }}</dd>
+                <dt>{{_("Created")}}</dt>
+                    <dd class="created">{{ object.created }}</dd>
+                <dt>{{_("Modified")}}</dt>
+                    <dd class="modified">{{ object.modified }}</dd>
+            </dl>
+        </section>
+    </section>
+</section>
+
+{% endblock %}

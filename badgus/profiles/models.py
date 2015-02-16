@@ -1,6 +1,3 @@
-import os.path
-from os.path import dirname
-
 from datetime import datetime, timedelta, tzinfo
 from time import time, gmtime, strftime
 
@@ -10,100 +7,26 @@ import requests
 import urllib
 import json
 
-from urlparse import urljoin
-
 from constance import config as c_config
 
 import bleach
-
-try:
-    from commons.urlresolvers import reverse
-except ImportError, e:
-    from django.core.urlresolvers import reverse
-
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
-
-try:
-    from tower import ugettext_lazy as _
-except ImportError, e:
-    from django.utils.translation import ugettext_lazy as _
-
-try:
-    from PIL import Image
-except ImportError:
-    import Image
+from cStringIO import StringIO
+from tower import ugettext_lazy as _
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.core.files.base import ContentFile
-from django.core.files.storage import FileSystemStorage
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from badgus.base.utils import scale_image, mk_upload_to, UPLOADS_FS
 
 
 MAX_USERNAME_CHANGES = getattr(settings, 'PROFILE_MAX_USERNAME_CHANGES', 3)
 
 IMG_MAX_SIZE = getattr(settings, "PROFILE_IMG_MAX_SIZE", (256, 256))
-
-# Set up a file system for badge uploads that can be kept separate from the
-# rest of /media if necessary. Lots of hackery to ensure sensible defaults.
-UPLOADS_ROOT = getattr(settings, 'PROFILE_UPLOADS_ROOT',
-    os.path.join(getattr(settings, 'MEDIA_ROOT', 'media/'), 'uploads'))
-UPLOADS_URL = getattr(settings, 'PROFILE_UPLOADS_URL',
-    urljoin(getattr(settings, 'MEDIA_URL', '/media/'), 'uploads/'))
-PROFILE_UPLOADS_FS = FileSystemStorage(location=UPLOADS_ROOT,
-                                       base_url=UPLOADS_URL)
-
-
-def scale_image(img_upload, img_max_size):
-    """Crop and scale an image file."""
-    try:
-        img = Image.open(img_upload)
-    except IOError:
-        return None
-
-    src_width, src_height = img.size
-    src_ratio = float(src_width) / float(src_height)
-    dst_width, dst_height = img_max_size
-    dst_ratio = float(dst_width) / float(dst_height)
-
-    if dst_ratio < src_ratio:
-        crop_height = src_height
-        crop_width = crop_height * dst_ratio
-        x_offset = int(float(src_width - crop_width) / 2)
-        y_offset = 0
-    else:
-        crop_width = src_width
-        crop_height = crop_width / dst_ratio
-        x_offset = 0
-        y_offset = int(float(src_height - crop_height) / 2)
-
-    img = img.crop((x_offset, y_offset,
-        x_offset + int(crop_width), y_offset + int(crop_height)))
-    img = img.resize((dst_width, dst_height), Image.ANTIALIAS)
-
-    if img.mode != "RGB":
-        img = img.convert("RGB")
-    new_img = StringIO()
-    img.save(new_img, "PNG")
-    img_data = new_img.getvalue()
-
-    return ContentFile(img_data)
-
-
-def mk_upload_to(field_fn):
-    """upload_to builder for file upload fields"""
-    def upload_to(instance, filename):
-        base, slug = instance.get_upload_meta()
-        time_now = int(time())
-        return '%(base)s/%(slug)s/%(time_now)s_%(field_fn)s' % dict(
-            time_now=time_now, slug=slug, base=base, field_fn=field_fn)
-    return upload_to
 
 
 class UserProfile(models.Model):
@@ -118,7 +41,7 @@ class UserProfile(models.Model):
                                     unique=False)
 
     avatar = models.ImageField(blank=True, null=True,
-                               storage=PROFILE_UPLOADS_FS,
+                               storage=UPLOADS_FS,
                                upload_to=mk_upload_to('avatar.png'))
 
     bio = models.TextField(blank=True)

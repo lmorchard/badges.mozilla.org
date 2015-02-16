@@ -73,11 +73,11 @@ ul.badges li img { border-radius: 8px 8px 8px 8px; display: block; }
 li.badge { display: block; float: left; position: relative; }
 li.badge a.image { display: block; }
 li.badge a.label { background: #222222; border-radius: 0pt 0pt 8px 8px; 
-    bottom: 0pt; color: #FFFFFF; display: block; opacity: 0.85;
+    bottom: 0pt; color: #FFFFFF; display: block; opacity: 0.75;
     padding: 0.25em 0pt; position: absolute; text-align: center; 
     white-space: normal;
     text-decoration: none; width: 128px; }
-li.badge a.label:before { content: "✸ "; font-size: 1.5em; }
+li.badge a.label:before { content: "\2600\00a0"; font-size: 1.5em; }
 li.badge span.badge_title, li.badge span.relation, li.badge span.user {
     display: block; padding: 2px; }
 
@@ -92,6 +92,7 @@ ul.awards li.award {
      position: relative;
      width: 256px;
 }
+ul.awards li.award a.label { background: none; }
 ul.awards li.award img { border-radius: 8px 8px 8px 8px; }
 ul.awards li.award a.avatar_image { position: absolute; right: 0pt; }
 ul.awards li.award a.award_image { position: absolute; left: 0pt; }
@@ -112,7 +113,7 @@ ul.awards li.award span.badge_title, li.award span.relation, li.award span.user 
 ul.awards li.award span.badge_title { border-radius: 0pt 0pt 8px 8px;
     bottom: 0pt; left: 0pt; width: 128px; white-space: normal }
 
-ul.awards li.award span.badge_title:before { content: "✸ "; font-size: 1.5em; }
+ul.awards li.award span.badge_title:before { content: "\2600\00a0"; font-size: 1.5em; }
 
 ul.awards li.award span.relation {
      border-radius: 8px 8px 8px 8px;
@@ -123,10 +124,10 @@ ul.awards li.award span.relation {
      width: 96px;
 }
 
-ul.awards li.award span.relation:after { content: " ⇨"; font-size: 1.25em; }
+ul.awards li.award span.relation:after { content: "\00a0\21D2"; font-size: 1.25em; }
 ul.awards li.award span.user { border-radius: 0pt 0pt 8px 8px;
      bottom: 0pt; right: 0pt; width: 128px; white-space: normal }
-ul.awards li.award span.user:before { content: "☺ "; font-size: 1.25em; }
+ul.awards li.award span.user:before { content: "\263A\00a0"; font-size: 1.25em; }
 ul.awardees { margin: 0pt; padding: 0pt; }
 
 ul.awardees li.awardee {
@@ -156,7 +157,52 @@ ul.awardees li.awardee .label {
      z-index: 10;
 }
 
-ul.awardees li.awardee .label:before { content: "☺ "; font-size: 1.25em; }
+ul.awardees li.awardee .label:before { content: "\263A\00a0"; font-size: 1.25em; }
+
+ul.teams { margin: 0pt; padding: 0pt; }
+ul.teams li { border-radius: 8px 8px 8px 8px; border: 1px solid #EEEEEE;
+    list-style: none outside none; margin: 0pt 0.75em 0.75em 0pt; padding: 0pt; }
+ul.teams li img { border-radius: 8px 8px 8px 8px; display: block; }
+
+/* HACK: Undo what bootstrap does */
+.team, .team:hover { padding: 0; font-size: inherit; font-weight: inherit;
+    color: inherit; background-color: transparent; border-radius: inherit;
+    cursor: default; white-space: inherit }
+
+li.team { display: block; float: left; position: relative; }
+li.team a.image { display: block; }
+li.team a.label { background: #222222; border-radius: 0pt 0pt 8px 8px; 
+    bottom: 0pt; color: #FFFFFF; display: block; opacity: 0.75;
+    padding: 0.25em 0pt; position: absolute; text-align: center; 
+    white-space: normal;
+    text-decoration: none; width: 128px; }
+li.team a.label:before { 
+    content: "\26AF\00a0"; 
+    font-size: 1.5em; 
+}
+li.team span.team_title, li.team span.relation, li.team span.user {
+    display: block; padding: 2px; }
+
+#team_badges, #team_members { clear: both }
+
+ul.members { margin: 0pt; padding: 0pt; clear: both; }
+ul.members li { border-radius: 8px 8px 8px 8px; border: 1px solid #EEEEEE;
+    list-style: none outside none; margin: 0pt 0.75em 0.75em 0pt; padding: 0pt; }
+ul.members li img { border-radius: 8px 8px 8px 8px; display: block; }
+
+li.member { display: block; float: left; position: relative; }
+li.member a.image { display: block; }
+li.member a.label { background: #222222; border-radius: 0pt 0pt 8px 8px; 
+    bottom: 0pt; color: #FFFFFF; display: block; opacity: 0.75;
+    padding: 0.25em 0pt; position: absolute; text-align: center; 
+    white-space: normal;
+    text-decoration: none; width: 128px; }
+li.member a.label:before { 
+    content: "\263A\00a0"; 
+    font-size: 1.5em; 
+}
+li.member span.member_title, li.member span.relation, li.member span.user {
+    display: block; padding: 2px; }
 
 dl.badge a.image img, dl.profile img.avatar { border-radius: 8px; }
 
@@ -188,6 +234,8 @@ form ul li div.clearablefileinput { margin: 0 0 0 16.5ex; }
 form ul li div.clearablefileinput .clear label { float: inherit;
     display: inline; margin: inherit; text-align: inherit; width: auto }
 form#edit_badge ul li div.clearablefileinput .clear { display: none; }
+
+form.inline { display: inline; }
 
 section.sample-badge { }
 section.sample-badge dl.badge p { font-size: 0.95em; margin: 1.15em 0 0 0; 
@@ -224,7 +272,7 @@ span.notice_type { width: 12em; text-align: center; float: left;
     padding-right: 0.75em; margin-left: 1em; margin-right: 1em; }
 span.notice_message { }
 span.notice_time, a.notice_time { float: left; color: #999;
-    font-size: 0.85em; margin-right: 0.25em; }
+    font-size: 0.75em; margin-right: 0.25em; }
 
 div.notice_settings { background: #DEF; padding: 8px; margin: 20px 0; }
 div.notice_settings h2 { margin: 0 0 5px 0; padding: 0; }

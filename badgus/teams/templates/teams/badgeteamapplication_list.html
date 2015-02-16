@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block pageid %}team_applications{% endblock %}
+
+{% block content %}
+
+<section class="applications_list">
+    <header class="page-header">
+        <h2>
+            {% if 'approved' in request.GET %}
+                <span class="approved-title">{{ _("Approved Applications for Team: {team}") | fe(team=team.name) }}</span>
+            {% else %}
+                <span class="pending-title">{{ _("Pending Applications for Team: {team}") | fe(team=team.name) }}</span>
+            {% endif %}
+            <small>
+                {% if 'approved' in request.GET %}
+                    <a class="btn btn-info btn-xs" href="{{ url('teams.team_applications_list', team_slug=team.slug) }}">{{ _('View pending') }}</a>
+                {% else %}
+                    <a class="btn btn-info btn-xs" href="{{ url('teams.team_applications_list', team_slug=team.slug) }}?approved">{{ _('View approved') }}</a>
+                {% endif %}
+            </small>
+        </h2>
+    </header>
+
+    <ul class="applications">
+        {% for object in object_list %}
+            <li class="application">
+            <a href="{{ object.get_absolute_url() }}"><img src="{{ user_avatar(object.creator) }}" alt="{{ object.creator }}" width="28" height="28" /> {{ object.creator }} applied on {{ object.created }}</a> {{object.approver}}
+            </li>
+        {% else %}
+            <li class="empty">{{ _("No applications, yet.") }}</li>
+        {% endfor %}
+    </ul>
+
+</section>
+{% endblock %}

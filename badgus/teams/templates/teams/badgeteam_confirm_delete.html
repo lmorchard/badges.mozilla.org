@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block pageid %}team_detail{% endblock %}
+
+{% block content %}
+
+<section>
+    <section class="row-fluid">
+        <section class="span6">
+            <header class="page-header">
+                <h2>{{ _("Delete a team") }}</h2>
+            </header>
+            <form id="delete_team" method="POST" action="">
+                {{ csrf() }}
+                <p>Are you sure you want to delete "{{ object }}"?</p>
+                <input type="submit" value="Confirm" />
+            </form>
+        </section>
+    </section>
+</section>
+
+{% endblock %}

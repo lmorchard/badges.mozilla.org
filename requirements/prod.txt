@@ -2,6 +2,9 @@
 # sha256: VOtZznhUAcfR_e7SRe_OWX6Q-BHWog9rXGkxwASdY6Y
 Django==1.6.10
 
+# sha256: 02C9MYmPnfWfb6p4ZVEGW7pFs15-48ObOBtPv-9zkvQ
+South==1.0.2
+
 # sha256: gRBAtkfl1WhvhNtBXv1pfmJQAIsRK2kJunesBZ4UDHQ
 MySQL-python==1.2.5
 
@@ -120,6 +123,7 @@ django-constance==1.0.1
 # sha256: UE5EGWeseGBKs18DABj8mm-icOam6YRx0jEf139wZ0s
 django-compressor==1.4
 
+# sha256: BrZLrybHpDbLuBRk56UAR66jDbEFnb5uCdxEPvojuiA
 # sha256: qI7Y-5I6U8cMLEb75FCLX4Fka0sBQB8VaKghZxszIVw
 # sha256: 53T3tTehlADKaH9I01KrdGFzKsQThd2I_a1Hie-tKcU
 # sha256: BrZLrybHpDbLuBRk56UAR66jDbEFnb5uCdxEPvojuiA

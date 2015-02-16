@@ -37,6 +37,21 @@
     {% endif %}
     <dt>{{_("Creator:")}}</dt>
         <dd><a href="{{ badge.creator.get_absolute_url() }}"><img src="{{ user_avatar(badge.creator) }}" class="avatar" alt="{{ badge.creator }}" width="28" height="28" />{{ badge.creator }}</a></dd>
+    {% if badge.team %}
+        <dt>{{_("Team:")}}</dt>
+            <dd class="team">
+                {% if badge.team and badge.team.image %}
+                    {% set image_url = badge.team.image.url %}
+                {% else %}
+                    {# TODO: Put the URL for default badge.team image in settings #}
+                    {% set image_url = static("img/default-badge.png") %}
+                {% endif %}
+                <a href="{{ badge.team.get_absolute_url() }}" class="image"><img src="{{ image_url }}"
+                    alt="{{ badge.team.name }}" width="64" height="64" /></a>
+                <br>
+                <a href="{{ badge.team.get_absolute_url() }}"><span class="title">{{ badge.team.name }}</span></a>
+            </dd>
+    {% endif %}
     <dt>{{_("Created:")}}</dt>
         <dd>{{ badge.created }}</dd>
     <dt>{{_("Modified:")}}</dt>

@@ -308,7 +308,7 @@ INSTALLED_APPS = [
     'tower',  # for ./manage.py extract (L10n)
     'cronjobs',  # for ./manage.py cron * cmd line tasks
     'django_browserid',
-
+    'teamwork',
 
     # Django contrib apps
     'django.contrib.auth',
@@ -332,6 +332,7 @@ INSTALLED_APPS = [
     'valet_keys',
 
     'badgus.profiles',
+    'badgus.teams',
     
     'badger',
 
@@ -339,7 +340,7 @@ INSTALLED_APPS = [
 
     'notification',
     #'csp',
-    #'south',
+    'south',
 ]
 
 for app in config('EXTRA_APPS', default='', cast=Csv()):
@@ -486,7 +487,8 @@ BROWSERID_USERNAME_ALGO = username_algo
 
 AUTHENTICATION_BACKENDS = (
     'django_browserid.auth.BrowserIDBackend',
-    'django.contrib.auth.backends.ModelBackend'
+    'django.contrib.auth.backends.ModelBackend',
+    'teamwork.backends.TeamworkBackend',
 )
 AUTH_PROFILE_MODULE = "profiles.UserProfile"
 
@@ -661,3 +663,23 @@ CONSTANCE_CONFIG = dict(
 BROWSERID_VERIFY_CLASS = 'django_browserid.views.Verify'
 
 SQL_RESET_SEQUENCES = False
+
+TEAMWORK_BASE_POLICIES = {
+    "all": (
+        'teams.list_badgeteam',
+        'teams.view_badgeteam', 
+    ),
+    "authenticated": (
+        'teams.add_badgeteam',
+        'teams.apply_badgeteam',
+    ),
+    "owners": (
+        'badger.change_badge',
+        'badger.delete_badge',
+        'badger.award_badge',
+        'badger.nominate_badge',
+        'badger.manage_deferredawards',
+    ),
+    "members": (
+    ),
+}

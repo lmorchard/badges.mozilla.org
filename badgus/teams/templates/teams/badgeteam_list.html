@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block pageid %}teams_home{% endblock %}
+
+{% block content %}
+
+<section class="badges_list" class="item_flow">
+    <header class="page-header">
+        <h2>
+            <span>{{ _("All teams") }}</span>
+            <small>
+                {% if request.user.has_perm('teams.add_badgeteam') %}
+                    <a class="action btn btn-primary" 
+                        href="{{ url('teams.team_create') }}">{{ _('Create new team') }}</a>
+                {% endif %}
+            </small>
+        </h2>
+    </header>
+
+    <ul class="teams">
+        {% for team in object_list %}
+            <li class="team">
+                {% if team and team.image %}
+                    {% set image_url = team.image.url %}
+                {% else %}
+                    {# TODO: Put the URL for default team image in settings #}
+                    {% set image_url = static("img/default-badge.png") %}
+                {% endif %}
+                <a href="{{ team.get_absolute_url() }}" class="image"><img src="{{ image_url }}"
+                    alt="{{ team.name }}" width="128" height="128" /></a>
+                <a href="{{ team.get_absolute_url() }}" class="label"><span class="title">{{ team.name }}</span></a>
+            </li>
+        {% else %}
+            <li>{{ _("No teams, yet.") }}</li>
+        {% endfor %}
+    </ul>
+
+</section>
+{% endblock %}
