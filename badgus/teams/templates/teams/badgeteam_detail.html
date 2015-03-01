@@ -87,10 +87,15 @@
                 </h2>
             </header>
             <ul class="members clearfix">
-                {% for member in member_list %}
+                {% for member, team in memberships %}
                     <li class="member">
                         <a href="{{ member.user.get_absolute_url() }}" class="image avatar_image"><img src="{{ user_avatar(member.user) }}" alt="{{ member.user.username }}" width="128" height="128" /></a>
                         <a href="{{ member.user.get_absolute_url() }}" class="label"><span class="title">{{ member.user }}</span></a>
+
+                        {% if request.user.has_perm('teamwork.delete_member', member) %}
+                            <a class="btn btn-sm btn-danger remove_member" data-username="{{ member.user.username }}"
+                                href="{{ url('teams.remove_member', team.slug, member.user.username) }}">{{ _('Remove') }}</a>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>

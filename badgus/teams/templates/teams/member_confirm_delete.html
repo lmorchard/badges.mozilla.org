@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block pageid %}member_delete{% endblock %}
+
+{% block content %}
+
+<section>
+    <section class="row-fluid">
+        <section class="span6">
+            <header class="page-header">
+                <h2>{{ _("Revoke team membership") }}</h2>
+            </header>
+            <form id="delete_member" method="POST" action="">
+                {{ csrf() }}
+                <p>Are you sure you want to revoke {{ user }}'s membership for "{{ team }}"?</p>
+                <input value="{{ _('Yes, revoke membership') }}" type="submit" class="btn btn-danger submit" />
+                <a class="action btn btn-primary" href="{{ user.get_absolute_url() }}">{{ _('No, do not revoke membership') }}</a>
+            </form>
+        </section>
+    </section>
+</section>
+
+{% endblock %}

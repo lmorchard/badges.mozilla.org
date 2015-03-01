@@ -199,3 +199,26 @@ class BadgeTeamApplicationViewsTest(BadgeTeamTestCase):
 
         doc = pq(self.client.get(url, follow=True).content)
         eq_(1, doc.find('.badges .badge .label .title:contains("test-badge")').length)
+
+    def test_leave_team(self):
+        """Members and owners should be able to remove membership from team detail"""
+        team1 = BadgeTeam(name='randoteam46')
+        team1.save()
+        
+        team2 = BadgeTeam(name='randoteam69')
+        team2.save()
+
+        team1.add_member(self.users['owner'], is_owner=True)
+        team1.add_member(self.users['member'])
+        team2.add_member(self.users['member'])
+
+        button_selector = ('.members .member .remove_member[data-username=%s]' %
+                           self.users['member'].username)
+
+        cases = ( ('user', 0, 0), ('member', 1, 1), ('owner', 1, 0) )
+        for username, expected_team1_count, expected_team2_count in cases:
+            self.client_login(username)
+            doc = pq(self.client.get(team1.get_absolute_url(), follow=True).content)
+            eq_(expected_team1_count, doc.find(button_selector).length)
+            doc = pq(self.client.get(team2.get_absolute_url(), follow=True).content)
+            eq_(expected_team2_count, doc.find(button_selector).length)

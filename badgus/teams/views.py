@@ -9,6 +9,7 @@ from django.views.generic.base import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.models import User, Group, Permission
 
 from tower import ugettext_lazy as _
 
@@ -51,7 +52,9 @@ class TeamDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(TeamDetailView, self).get_context_data(**kwargs)
 
-        context['member_list'] = Member.objects.filter(team=self.object)
+        context['memberships'] = [
+            (member, BadgeTeam.objects.get(team_ptr__pk=member.team.pk))
+            for member in Member.objects.filter(team=self.object)]
         context['badge_list'] = Badge.objects.filter(team=self.object)
 
         context['existing_application'] = None
@@ -187,3 +190,46 @@ class TeamApplicationApproveView(View, SingleObjectMixin):
         success_url = self.object.get_absolute_url()
         self.object.approve(request.user)
         return HttpResponseRedirect(success_url)
+
+
+class TeamMemberDeleteView(DeleteView):
+    template_name = 'teams/member_confirm_delete.html'
+    model = Member
+
+    @method_decorator(login_required)
+    @object_permission_required('teamwork.delete_member')
+    def dispatch(self, request, *args, **kwargs):
+        self.success_url = self.user.get_absolute_url()
+        return super(TeamMemberDeleteView, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return Member.objects.filter(team=self.team, user=self.user)
+
+    def get_object(self, queryset=None):
+        self.team = get_object_or_404(BadgeTeam, slug=self.kwargs['team_slug'])
+        self.user = get_object_or_404(User, username=self.kwargs['username'])
+
+        queryset = self.get_queryset()
+        try:
+            # Get the single item from the filtered queryset
+            obj = queryset.get()
+        except queryset.model.DoesNotExist:
+            raise Http404(_("No %(verbose_name)s found matching the query") %
+                          {'verbose_name': queryset.model._meta.verbose_name})
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(TeamMemberDeleteView, self).get_context_data(**kwargs)
+        context['team'] = self.team
+        context['user'] = self.user
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Calls the delete() method on the fetched object and then
+        redirects to the success URL.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.team.remove_member(self.user)
+        return HttpResponseRedirect(success_url) 

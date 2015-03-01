@@ -62,6 +62,9 @@ class BadgeTeam(Team):
             'teams.list_badgeteamapplication',
             'teams.view_badgeteamapplication',
             'teams.approve_badgeteamapplication',
+            'teams.add_member',
+            'teams.remove_member',
+            'teamwork.delete_member',
             'badger.change_badge',
             'badger.delete_badge',
             'badger.award_badge',
@@ -126,6 +129,16 @@ class BadgeTeam(Team):
         is_new = not self.pk
 
         super(BadgeTeam, self).save(**kwargs)
+
+    def remove_member(self, user):
+        """Remove all badges from the team, then remove the member"""
+        from badger.models import Badge
+
+        for badge in Badge.objects.filter(creator=user, team=self):
+            badge.team = None
+            badge.save()
+
+        super(BadgeTeam, self).remove_member(user)
 
 
 class BadgeTeamApplication(models.Model):

@@ -31,4 +31,9 @@ urlpatterns = patterns('badgus.teams.views',
     url(r'^(?P<team_slug>[^/]+)/applications/(?P<pk>[^/]+)/approve$',
         TeamApplicationApproveView.as_view(),
         name='teams.team_application_approve'),
+
+    url(r'^(?P<team_slug>[^/]+)/members/(?P<username>[^/]+)/delete$',
+        TeamMemberDeleteView.as_view(),
+        name='teams.remove_member')
+
 )

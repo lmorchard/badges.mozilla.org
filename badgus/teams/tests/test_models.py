@@ -14,6 +14,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from badger.models import Badge
+
 from badgus.base.utils import slugify
 from badgus.teams.models import BadgeTeam, BadgeTeamApplication
 from badgus.teams.tests import BadgeTeamTestCase
@@ -56,6 +58,21 @@ class BadgeTeamTest(BadgeTeamTestCase):
         eq_(1, Badge.objects.filter(title=badge.title).count())
         team.delete()
         eq_(1, Badge.objects.filter(title=badge.title).count())
+
+    def test_remove_member(self):
+        """Membership should be revokable and member's badges are removed from the team"""
+        team = BadgeTeam(name='To delete')
+        team.save()
+
+        team.add_member(self.users['user'])
+
+        badge = Badge(title='No disassemble', creator=self.users['user'],
+                      team=team)
+        badge.save()
+
+        eq_(team, Badge.objects.get(pk=badge.pk).team)
+        team.remove_member(self.users['user'])
+        eq_(None, Badge.objects.get(pk=badge.pk).team)
 
 
 class BadgeTeamApplicationTest(BadgeTeamTestCase):

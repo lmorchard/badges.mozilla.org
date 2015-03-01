@@ -111,7 +111,7 @@
     </section>
     {% endif %}
 
-    {% if teams %}
+    {% if memberships %}
     <section id="team_membership" class="item_flow">
         <header>
             <h3>
@@ -119,17 +119,25 @@
             </h3>
         </header>
         <ul class="teams">
-            {% for team in teams %}
+            {% for member, team in memberships %}
                 <li class="team">
+                    
                     {% if team and team.image %}
                         {% set image_url = team.image.url %}
                     {% else %}
                         {# TODO: Put the URL for default team image in settings #}
                         {% set image_url = static("img/default-badge.png") %}
                     {% endif %}
+
                     <a href="{{ team.get_absolute_url() }}" class="image"><img src="{{ image_url }}"
                         alt="{{ team.name }}" width="128" height="128" /></a>
                     <a href="{{ team.get_absolute_url() }}" class="label"><span class="title">{{ team.name }}</span></a>
+
+                    {% if request.user.has_perm('teamwork.delete_member', member) %}
+                        <a class="btn btn-sm btn-danger remove_member" data-team-slug="{{ team.slug }}"
+                            href="{{ url('teams.remove_member', team.slug, user.username) }}">{{ _('Remove') }}</a>
+                    {% endif %}
+
                 </li>
             {% else %}
                 <li>{{ _("No teams, yet.") }}</li>
