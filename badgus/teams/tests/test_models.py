@@ -44,6 +44,19 @@ class BadgeTeamTest(BadgeTeamTestCase):
         team.save()
         eq_(slug2, team.slug)
 
+    def test_team_deletion_does_not_delete_badges(self):
+        """Deletion of a team should not delete badges"""
+        team = BadgeTeam(name='To delete')
+        team.save()
+
+        badge = Badge(title='No disassemble', creator=self.users['user'],
+                      team=team)
+        badge.save()
+
+        eq_(1, Badge.objects.filter(title=badge.title).count())
+        team.delete()
+        eq_(1, Badge.objects.filter(title=badge.title).count())
+
 
 class BadgeTeamApplicationTest(BadgeTeamTestCase):
 

@@ -434,7 +434,8 @@ class Badge(models.Model):
         tags = TaggableManager(blank=True)
 
     if teamwork:
-        team = models.ForeignKey(BadgeTeam, blank=True, null=True)
+        team = models.ForeignKey(BadgeTeam, blank=True, null=True,
+                                 on_delete=models.SET_NULL)
 
     creator = models.ForeignKey(User, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True, blank=False)
