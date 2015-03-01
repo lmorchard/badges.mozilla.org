@@ -50,7 +50,7 @@
             {% set nominations_to_approve = nominations_pending_approval(profile.user) %}
             {% if nominations_to_approve %}
             <section id="nominations_to_approve">
-                <header class="page-header">
+                <header>
                     <h3>Nominations for you to approve</h3>
                 </header>
                 <ul class="nominations">
@@ -66,7 +66,7 @@
             {% set nominations_to_accept = nominations_pending_acceptance(profile.user) %}
             {% if nominations_to_accept %}
             <section id="nominations_to_accept">
-                <header class="page-header">
+                <header>
                     <h3>Nominations for you to accept</h3>
                 </header>
                 <ul class="nominations">
@@ -82,7 +82,7 @@
     {% set award_list = user_awards(profile.user) %}
     {% if award_list %}
     <section id="recent_awards" class="item_flow">
-        <header class="page-header">
+        <header>
             <h3>
                 <span>{{ _('Recently awarded badges for {user}') | fe(user=user) }}</span>
                 <small>(
@@ -98,7 +98,7 @@
     {% set badge_list = user_badges(profile.user) %}
     {% if badge_list %}
     <section id="recent_badges" class="item_flow">
-        <header class="page-header">
+        <header>
             <h3>
                 <span>{{ _('Badges created by {user}') | fe(user=user) }}</span>
                 <small>(
@@ -113,7 +113,7 @@
 
     {% if teams %}
     <section id="team_membership" class="item_flow">
-        <header class="page-header">
+        <header>
             <h3>
                 <span>{{ _('Teams') }}</span>
             </h3>

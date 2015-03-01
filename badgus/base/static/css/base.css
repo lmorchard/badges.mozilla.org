@@ -183,7 +183,7 @@ li.team a.label:before {
 li.team span.team_title, li.team span.relation, li.team span.user {
     display: block; padding: 2px; }
 
-#team_badges, #team_members { clear: both }
+#team_badges, #team_members, #team_membership { clear: both }
 
 ul.members { margin: 0pt; padding: 0pt; clear: both; }
 ul.members li { border-radius: 8px 8px 8px 8px; border: 1px solid #EEEEEE;

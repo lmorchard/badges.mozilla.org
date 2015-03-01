@@ -1,8 +1,8 @@
+{% if is_paginated %}
 <nav class="pagination">
     {% if page_obj and page_obj.start_index() != page_obj.end_index() %}
         <p class="showing">{{_('{start}&ndash;{end} of {total}') | fe(start=page_obj.start_index(),end=page_obj.end_index(),total=paginator.count) | safe }}</p>
     {% endif %}
-    {% if is_paginated %}
       <ul class="paging">
         {% if page_obj.number != 1 %}
             <li class="first"><a href="{{ pagination_base_url }}?page=1&sort={{current_sort}}" title="{{_('Go to the first page')}}">First</a></li>
@@ -17,5 +17,5 @@
             <li class="last"><a href="{{ pagination_base_url }}?page={{ paginator.num_pages }}&sort={{current_sort}}" title="{{_('Go to the last page')}}">{{_('Last')}}</a></li>
         {% endif %}
       </ul>
-    {% endif %}
 </nav>
+{% endif %}
