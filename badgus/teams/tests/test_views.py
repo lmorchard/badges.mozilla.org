@@ -200,7 +200,7 @@ class BadgeTeamApplicationViewsTest(BadgeTeamTestCase):
         doc = pq(self.client.get(url, follow=True).content)
         eq_(1, doc.find('.badges .badge .label .title:contains("test-badge")').length)
 
-    def test_leave_team(self):
+    def test_revoke_team_membership_buttons(self):
         """Members and owners should be able to remove membership from team detail"""
         team1 = BadgeTeam(name='randoteam46')
         team1.save()
@@ -222,3 +222,20 @@ class BadgeTeamApplicationViewsTest(BadgeTeamTestCase):
             eq_(expected_team1_count, doc.find(button_selector).length)
             doc = pq(self.client.get(team2.get_absolute_url(), follow=True).content)
             eq_(expected_team2_count, doc.find(button_selector).length)
+
+    def test_member_delete_post(self):
+        """Confirming the membership revocation form should revoke membership"""
+        team1 = BadgeTeam(name='randoteam46')
+        team1.save()
+
+        team1.add_member(self.users['member'])
+
+        ok_(team1.has_member(self.users['member']))
+
+        self.client_login('member')
+        r = self.client.post(reverse('teams.remove_member', kwargs={
+            "team_slug": team1.slug,
+            "username": self.users['member'].username
+        }), follow=True)
+
+        ok_(not team1.has_member(self.users['member']))
