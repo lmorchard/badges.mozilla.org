@@ -239,3 +239,19 @@ class BadgeTeamApplicationViewsTest(BadgeTeamTestCase):
         }), follow=True)
 
         ok_(not team1.has_member(self.users['member']))
+
+    def test_promote_member(self):
+        """Team owners should be able to promote members"""
+        ok_(False, 'TODO')
+
+    def test_demote_member(self):
+        """Team owners should be able to demote members"""
+        ok_(False, 'TODO')
+
+    def test_invite_member(self):
+        """Teams should be able to invite users to join"""
+        ok_(False, 'TODO')
+
+    def test_restricted_team_creation(self):
+        """Team creation should optionally be restricted to vouched Mozillians"""
+        ok_(False, 'TODO')

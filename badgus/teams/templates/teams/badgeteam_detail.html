@@ -58,8 +58,9 @@
     
     <section class="span8">
         
+        {% if badge_list %}
         <section id="team_badges" class="item_flow">
-            <header class="page-header">
+            <header>
                 <h2>
                     <span>{{ _("Badges") }}</span>
                 </h2>
@@ -79,9 +80,11 @@
                 {% endfor %}
             </ul>
         </section>
+        {% endif %}
         
+        {% if memberships %}
         <section id="team_members" class="item_flow">
-            <header class="page-header">
+            <header>
                 <h2>
                     <span>{{ _("Members") }}</span>
                 </h2>
@@ -100,6 +103,7 @@
                 {% endfor %}
             </ul>
         </section>
+        {% endif %}
     
     </section>
 

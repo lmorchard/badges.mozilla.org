@@ -27,12 +27,18 @@
 
         <dl>
             <dt>{{_("Team")}}</dt>
-                <dd class="teamname"><a href="{{ object.team.get_absolute_url() }}">{{ object.team }}</a></dd>
+            {% if object.team.image %}
+                {% set team_image_url = object.team.image.url %}
+            {% else %}
+                {# TODO: Put the URL for default team image in settings #}
+                {% set team_image_url = static("img/default-badge.png") %}
+            {% endif %}
+            <dd class="teamname"><a href="{{ object.team.get_absolute_url() }}"><img src="{{ team_image_url }}" width="28" height="28" /> {{ object.team }}</a></dd>
             <dt>{{_("Applicant")}}</dt>
-                <dd class="creator"><a href="{{ object.creator.get_absolute_url() }}"><img src="{{ user_avatar(object.creator) }}" class="avatar" alt="{{ object.creator }}" width="28" height="28" />{{ object.creator }}</a></dd>
+                <dd class="creator"><a href="{{ object.creator.get_absolute_url() }}"><img src="{{ user_avatar(object.creator) }}" class="avatar" alt="{{ object.creator }}" width="28" height="28" /> {{ object.creator }}</a></dd>
             {% if object.approver %}
                 <dt>{{_("Approved by")}}</dt>
-                    <dd class="approver"><a href="{{ object.approver.get_absolute_url() }}"><img src="{{ user_avatar(object.approver) }}" class="avatar" alt="{{ object.approver }}" width="28" height="28" />{{ object.approver }}</a></dd>
+                    <dd class="approver"><a href="{{ object.approver.get_absolute_url() }}"><img src="{{ user_avatar(object.approver) }}" class="avatar" alt="{{ object.approver }}" width="28" height="28" /> {{ object.approver }}</a></dd>
             {% endif %}
             <dt>{{_("Comment")}}</dt>
                 <dd class="comment">{{ object.comment }}</dd>

@@ -61,7 +61,8 @@ class TeamDetailView(DetailView):
         if self.request.user.is_authenticated():
             try:
                 context['existing_application'] = (BadgeTeamApplication.objects
-                    .get(team=self.object.team, creator=self.request.user))
+                    .filter(team=self.object.team, creator=self.request.user)
+                    .first())
             except BadgeTeamApplication.DoesNotExist:
                 pass
         return context
