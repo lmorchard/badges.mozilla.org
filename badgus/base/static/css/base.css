@@ -183,14 +183,11 @@ li.team a.label:before {
 li.team span.team_title, li.team span.relation, li.team span.user {
     display: block; padding: 2px; }
 
-ul.members li.member a.remove_member,
-ul.teams li.team a.remove_member {
+ul.members li.member .buttons, ul.teams li.team .buttons {
     display: none
 }
-/*ul.teams li.team:hover a.remove_member {*/
-ul.members li.member a.remove_member,
-ul.teams li.team a.remove_member {
-    display: block; position: absolute; top: 0; right: 0; z-index: 999
+ul.members li.member:hover .buttons, ul.teams li.team:hover .buttons {
+    text-align: right; display: block; position: absolute; top: 0; right: 0; z-index: 999
 }
 
 #team_badges, #team_members, #team_membership { clear: both }

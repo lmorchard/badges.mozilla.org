@@ -89,16 +89,29 @@
                     <span>{{ _("Members") }}</span>
                 </h2>
             </header>
+
             <ul class="members clearfix">
                 {% for member, team in memberships %}
-                    <li class="member">
+                <li class="member{% if team.has_owner(member.user) %} owner{% endif %}">
                         <a href="{{ member.user.get_absolute_url() }}" class="image avatar_image"><img src="{{ user_avatar(member.user) }}" alt="{{ member.user.username }}" width="128" height="128" /></a>
                         <a href="{{ member.user.get_absolute_url() }}" class="label"><span class="title">{{ member.user }}</span></a>
 
-                        {% if request.user.has_perm('teamwork.delete_member', member) %}
-                            <a class="btn btn-sm btn-danger remove_member" data-username="{{ member.user.username }}"
+                        <div class="buttons">
+                        {% if request.user.has_perm('teams.remove_member', team) %}
+                            <a class="btn btn-danger btn-xs remove_member" data-username="{{ member.user.username }}"
                                 href="{{ url('teams.remove_member', team.slug, member.user.username) }}">{{ _('Remove') }}</a>
                         {% endif %}
+
+                        {% if not team.has_owner(member.user) and request.user.has_perm('teams.promote_member', team) %}
+                            <a class="btn btn-success btn-xs promote_member" data-username="{{ member.user.username }}"
+                                href="{{ url('teams.promote_member', team.slug, member.user.username) }}">{{ _('Promote') }}</a>
+                        {% endif %}
+
+                        {% if team.has_owner(member.user) and request.user.has_perm('teams.demote_member', team) %}
+                            <a class="btn btn-danger btn-xs demote_member" data-username="{{ member.user.username }}"
+                                href="{{ url('teams.demote_member', team.slug, member.user.username) }}">{{ _('Demote') }}</a>
+                        {% endif %}
+                        </div>
                     </li>
                 {% endfor %}
             </ul>

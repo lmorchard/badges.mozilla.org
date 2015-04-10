@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block pageid %}member_promote{% endblock %}
+
+{% block content %}
+
+<section>
+    <section class="row-fluid">
+        <section class="span6">
+            <header class="page-header">
+                <h2>{{ _("Promote team member to owner") }}</h2>
+            </header>
+            <form id="promote_member" method="POST" action="">
+                {{ csrf() }}
+                <p>Are you sure you want to promote {{ user }} as owner of "{{ team }}"?</p>
+                <input value="{{ _('Yes, promote member') }}" type="submit" class="btn btn-success submit" />
+                <a class="action btn btn-primary" href="{{ user.get_absolute_url() }}">{{ _('No, do not promote member') }}</a>
+            </form>
+        </section>
+    </section>
+</section>
+
+{% endblock %}

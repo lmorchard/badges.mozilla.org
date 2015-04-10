@@ -64,6 +64,8 @@ class BadgeTeam(Team):
             'teams.approve_badgeteamapplication',
             'teams.add_member',
             'teams.remove_member',
+            'teams.promote_member',
+            'teams.demote_member',
             'teamwork.delete_member',
             'badger.change_badge',
             'badger.delete_badge',

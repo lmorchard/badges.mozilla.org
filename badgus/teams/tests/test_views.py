@@ -212,7 +212,7 @@ class BadgeTeamApplicationViewsTest(BadgeTeamTestCase):
         team1.add_member(self.users['member'])
         team2.add_member(self.users['member'])
 
-        button_selector = ('.members .member .remove_member[data-username=%s]' %
+        button_selector = ('.members .member[data-username=%s] .remove_member' %
                            self.users['member'].username)
 
         cases = ( ('user', 0, 0), ('member', 1, 1), ('owner', 1, 0) )
@@ -240,12 +240,36 @@ class BadgeTeamApplicationViewsTest(BadgeTeamTestCase):
 
         ok_(not team1.has_member(self.users['member']))
 
-    def test_promote_member(self):
-        """Team owners should be able to promote members"""
-        ok_(False, 'TODO')
+    def test_promote_demote_member_buttons(self):
+        """Members and owners should be able to remove membership from team detail"""
+        team1 = BadgeTeam(name='randoteam46')
+        team1.save()
+        
+        team2 = BadgeTeam(name='randoteam69')
+        team2.save()
 
-    def test_demote_member(self):
-        """Team owners should be able to demote members"""
+        team1.add_member(self.users['owner'], is_owner=True)
+        team1.add_member(self.users['member'])
+        team2.add_member(self.users['member'])
+
+        button_selector_tmpl = '.members .member[data-username=%s] .buttons .%s'
+
+        cases = (
+            ('owner', 1, 1, 0),
+            ('member', 0, 0, 0),
+            ('user', 0, 0, 0),
+        )
+        for username, team1_demote_count, team1_promote_count, team2_promote_count in cases:
+            self.client_login(username)
+            doc = pq(self.client.get(team1.get_absolute_url(), follow=True).content)
+            eq_(team1_demote_count, doc.find(button_selector_tmpl % ('owner', 'demote_user')).length)
+            eq_(team1_promote_count, doc.find(button_selector_tmpl % ('member', 'promote_user')).length)
+
+            doc = pq(self.client.get(team2.get_absolute_url(), follow=True).content)
+            eq_(team2_promote_count, doc.find(button_selector_tmpl % ('member', 'promote_user')).length)
+
+    def test_promote_demote_post(self):
+        """Team owners should be able to promote members"""
         ok_(False, 'TODO')
 
     def test_invite_member(self):

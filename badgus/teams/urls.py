@@ -34,6 +34,12 @@ urlpatterns = patterns('badgus.teams.views',
 
     url(r'^(?P<team_slug>[^/]+)/members/(?P<username>[^/]+)/delete$',
         TeamMemberDeleteView.as_view(),
-        name='teams.remove_member')
+        name='teams.remove_member'),
+    url(r'^(?P<team_slug>[^/]+)/members/(?P<username>[^/]+)/promote$',
+        TeamMemberPromoteView.as_view(),
+        name='teams.promote_member'),
+    url(r'^(?P<team_slug>[^/]+)/members/(?P<username>[^/]+)/demote$',
+        TeamMemberDemoteView.as_view(),
+        name='teams.demote_member'),
 
 )

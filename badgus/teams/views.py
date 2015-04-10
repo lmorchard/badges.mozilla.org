@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView, SingleObjectMixin
+from django.views.generic.detail import (DetailView, SingleObjectMixin, 
+                                         SingleObjectTemplateResponseMixin)
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.models import User, Group, Permission
 
@@ -198,8 +199,10 @@ class TeamMemberDeleteView(DeleteView):
     model = Member
 
     @method_decorator(login_required)
-    @object_permission_required('teamwork.delete_member')
     def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not request.user.has_perm('teams.remove_member', self.team):
+            raise PermissionDenied
         self.success_url = self.user.get_absolute_url()
         return super(TeamMemberDeleteView, self).dispatch(request, *args, **kwargs)
 
@@ -234,3 +237,45 @@ class TeamMemberDeleteView(DeleteView):
         success_url = self.get_success_url()
         self.team.remove_member(self.user)
         return HttpResponseRedirect(success_url) 
+
+
+class TeamMemberConfirmView(TemplateView):
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.team = get_object_or_404(BadgeTeam, slug=self.kwargs['team_slug'])
+        self.user = get_object_or_404(User, username=self.kwargs['username'])
+        self.member = get_object_or_404(Member, team=self.team, user=self.user)
+        
+        if not request.user.has_perm(self.permission_name, self.team):
+            raise PermissionDenied
+
+        self.success_url = self.team.get_absolute_url()
+        return super(TeamMemberConfirmView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(TeamMemberConfirmView, self).get_context_data(**kwargs)
+        context['team'] = self.team
+        context['user'] = self.user
+        context['member'] = self.member
+        return context
+
+
+class TeamMemberPromoteView(TeamMemberConfirmView):
+    template_name = 'teams/member_confirm_promote.html'
+    permission_name = 'teams.promote_member'
+
+    def post(self, request, *args, **kwargs):
+        self.member.is_owner = True
+        self.member.save()
+        return HttpResponseRedirect(self.success_url) 
+
+
+class TeamMemberDemoteView(TeamMemberConfirmView):
+    template_name = 'teams/member_confirm_demote.html'
+    permission_name = 'teams.demote_member'
+
+    def post(self, request, *args, **kwargs):
+        self.member.is_owner = False
+        self.member.save()
+        return HttpResponseRedirect(self.success_url) 

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block pageid %}member_demote{% endblock %}
+
+{% block content %}
+
+<section>
+    <section class="row-fluid">
+        <section class="span6">
+            <header class="page-header">
+                <h2>{{ _("Demote team member as owner") }}</h2>
+            </header>
+            <form id="demote_member" method="POST" action="">
+                {{ csrf() }}
+                <p>Are you sure you want to demote {{ user }} as owner of "{{ team }}"?</p>
+                <input value="{{ _('Yes, demote member') }}" type="submit" class="btn btn-danger submit" />
+                <a class="action btn btn-primary" href="{{ user.get_absolute_url() }}">{{ _('No, do not demote member') }}</a>
+            </form>
+        </section>
+    </section>
+</section>
+
+{% endblock %}
